@@ -17,6 +17,9 @@
 15.	[배열 만들기 2](#배열-만들기-2)
 16.	[코드 처리하기](#코드-처리하기)
 17.	[문자열 출력하기](#문자열-출력하기)
+18.	[외계어 사전](#외계어-사전)
+19.	[종이 자르기](#종이-자르기)
+20.	[직사각형 넓이 구하기](#직사각형-넓이-구하기)
 
 ---
 
@@ -623,3 +626,84 @@ rl.on('line', function (line) {
 ```
 
 ---
+
+문제 :  
+#### 외계어 사전
+
+설명 :  
+PROGRAMMERS-962 행성에 불시착한 우주비행사 머쓱이는 외계행성의 언어를 공부하려고 합니다. 알파벳이 담긴 배열 spell과 외계어 사전 dic이 매개변수로 주어집니다. spell에 담긴 알파벳을 한번씩만 모두 사용한 단어가 dic에 존재한다면 1, 존재하지 않는다면 2를 return하도록 solution 함수를 완성해주세요.
+
+입출력 예  
+| spell | dic | result |
+| :-: | :-: | :-: |
+| ["p", "o", "s"] | ["sod", "eocd", "qixm", "adio", "soo"] | 2 |
+| ["z", "d", "x"] | ["def", "dww", "dzx", "loveaw"] | 1 |
+| ["s", "o", "m", "d"] | ["moos", "dzx", "smm", "sunmmo", "som"] | 2 |
+
+solution.js:
+```javascript
+function solution(spell, dic) {
+    var answer = 0;
+    let check = 0;
+    
+    for(let d of dic) {
+        for(let s of spell) {
+            if(d.includes(s)) check++;
+        }
+        if(check === spell.length) answer++;
+        check = 0;
+    }
+    return answer === 0 ? 2 : 1;
+}
+```
+
+---
+
+문제 :  
+#### 직사각형 넓이 구하기
+
+설명 :  
+2차원 좌표 평면에 변이 축과 평행한 직사각형이 있습니다. 직사각형 네 꼭짓점의 좌표 [[x1, y1], [x2, y2], [x3, y3], [x4, y4]]가 담겨있는 배열 dots가 매개변수로 주어질 때, 직사각형의 넓이를 return 하도록 solution 함수를 완성해보세요.
+
+입출력 예  
+| dots | result |
+| :-: | :-: | 
+| [[1, 1], [2, 1], [2, 2], [1, 2]] | 1 |
+| [[-1, -1], [1, 1], [1, -1], [-1, 1]] | 4 |
+
+solution.js:
+```javascript
+function solution(dots) {
+    let x = [];
+    let y = [];
+    for(let d of dots) {
+        x.push(d[0]);
+        y.push(d[1]);       
+    }
+    x = (x.sort((a,b) => b - a))
+    y = (y.sort((a,b) => b - a))
+    return (x[0] - x.at(-1)) * (y[0] - y.at(-1));
+}
+```
+
+---
+
+문제 :  
+#### 종이 자르기
+
+설명 :  
+머쓱이는 큰 종이를 1 x 1 크기로 자르려고 합니다. 예를 들어 2 x 2 크기의 종이를 1 x 1 크기로 자르려면 최소 가위질 세 번이 필요합니다.
+
+입출력 예  
+| M  | N | result |
+| :-: | :-: | :-: |
+| 2 | 2 | 3 |
+| 2 | 5 | 9 |
+| 1 | 1 | 0 |
+
+solution.js:
+```javascript
+function solution(M, N) {
+    return M * N - 1;
+}
+```
