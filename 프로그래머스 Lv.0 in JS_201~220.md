@@ -7,6 +7,7 @@
 5.	[유한소수 판별하기](#유한소수-판별하기)
 6.	[저주의 숫자 3](#저주의-숫자-3)
 7.	[특이한 정렬](#특이한-정렬)
+8.	[문자열 밀기](#문자열-밀기)
 
 ---
 
@@ -239,6 +240,37 @@ solution.js:
 ```javascript
 function solution(numlist, n) {
     return numlist.sort((a,b) => Math.abs(n-b) - Math.abs(n-a) || a - b).reverse();
+}
+```
+
+---
+
+문제 :  
+#### 문자열 밀기
+
+설명 :  
+문자열 "hello"에서 각 문자를 오른쪽으로 한 칸씩 밀고 마지막 문자는 맨 앞으로 이동시키면 "ohell"이 됩니다. 이것을 문자열을 민다고 정의한다면 문자열 A와 B가 매개변수로 주어질 때, A를 밀어서 B가 될 수 있다면 밀어야 하는 최소 횟수를 return하고 밀어서 B가 될 수 없으면 -1을 return 하도록 solution 함수를 완성해보세요.
+
+입출력 예  
+| A | B | result |
+| :-: | :-: | :-: |
+| "hello" | "ohell" | 1 |
+| "apple" | "elppa" | -1 |
+| "atat" | "tata" | 1 |
+| "abc" | "abc" | 0 |
+
+solution.js:
+```javascript
+function solution(A, B) {
+    var answer = 0;
+    A = A.split("")
+    B = B.split("")
+    for(let i = 0; i < B.length; i++) {
+        if(String(A) === String(B)) return answer; 
+        A.unshift(A.pop());
+        answer++;
+    }
+    return -1;
 }
 ```
 
