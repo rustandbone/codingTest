@@ -9,6 +9,9 @@
 7.	[특이한 정렬](#특이한-정렬)
 8.	[문자열 밀기](#문자열-밀기)
 9.	[최빈값 구하기](#최빈값-구하기)
+10.	[전국 대회 선발 고사](#전국-대회-선발-고사)
+11.	[주사위 게임 3](#주사위-게임-3)
+12.	[배열 조각하기](#배열-조각하기)
 
 ---
 
@@ -311,6 +314,121 @@ function solution(array) {
     
     return count.indexOf(max) == count.lastIndexOf(max) ? 
         arr[count.indexOf(max)] : -1;
+}
+```
+
+---
+
+문제 :  
+#### 전국 대회 선발 고사
+
+설명 :  
+0번부터 n - 1번까지 n명의 학생 중 3명을 선발하는 전국 대회 선발 고사를 보았습니다. 등수가 높은 3명을 선발해야 하지만, 개인 사정으로 전국 대회에 참여하지 못하는 학생들이 있어 참여가 가능한 학생 중 등수가 높은 3명을 선발하기로 했습니다.  
+각 학생들의 선발 고사 등수를 담은 정수 배열 rank와 전국 대회 참여 가능 여부가 담긴 boolean 배열 attendance가 매개변수로 주어집니다. 전국 대회에 선발된 학생 번호들을 등수가 높은 순서대로 각각 a, b, c번이라고 할 때 10000 × a + 100 × b + c를 return 하는 solution 함수를 작성해 주세요.
+
+입출력 예  
+| rank | attendance | result |
+| :-: | :-: | :-: |
+| [3, 7, 2, 5, 4, 6, 1] | [false, true, true, true, true, false, false] | 20403 |
+| [1, 2, 3] | [true, true, true] | 102 |
+| [6, 1, 5, 2, 3, 4] | [true, false, true, false, false, true] | 50200 |
+
+solution.js:
+```javascript
+function solution(rank, attendance) {
+    let pick = [];
+    rank.map((a, index) => attendance[index] && pick.push(a));
+    pick.sort((a,b) => a - b);
+    return (10000 * rank.indexOf(pick[0])) + (100 * rank.indexOf(pick[1])) 
+        + rank.indexOf(pick[2]);
+}
+```
+
+---
+
+문제 :  
+#### 주사위 게임 3
+
+설명 :  
+1부터 6까지 숫자가 적힌 주사위가 네 개 있습니다. 네 주사위를 굴렸을 때 나온 숫자에 따라 다음과 같은 점수를 얻습니다.
+
+- 네 주사위에서 나온 숫자가 모두 p로 같다면 1111 × p점을 얻습니다.
+- 세 주사위에서 나온 숫자가 p로 같고 나머지 다른 주사위에서 나온 숫자가 q(p ≠ q)라면 (10 × p + q)2 점을 얻습니다.
+- 주사위가 두 개씩 같은 값이 나오고, 나온 숫자를 각각 p, q(p ≠ q)라고 한다면 (p + q) × |p - q|점을 얻습니다.
+- 어느 두 주사위에서 나온 숫자가 p로 같고 나머지 두 주사위에서 나온 숫자가 각각 p와 다른 q, r(q ≠ r)이라면 q × r점을 얻습니다.
+
+네 주사위에 적힌 숫자가 모두 다르다면 나온 숫자 중 가장 작은 숫자 만큼의 점수를 얻습니다.
+네 주사위를 굴렸을 때 나온 숫자가 정수 매개변수 a, b, c, d로 주어질 때, 얻는 점수를 return 하는 solution 함수를 작성해 주세요.
+
+입출력 예  
+| a | b | c | d | result |
+| :-: | :-: | :-: | :-: | :-: |
+| 2 | 2 | 2 | 2 | 2222 |
+| 4 | 1 | 4 | 4 | 1681 |
+| 6 | 3 | 3 | 6 | 27 |
+| 2 | 5 | 2 | 6 | 30 |
+| 6 | 4 | 2 | 5 | 2 |
+
+solution.js:
+```javascript
+function solution(a, b, c, d) {
+    var answer = [a,b,c,d].reduce((accu, curr) => { 
+        accu[curr] = (accu[curr] || 0) + 1; 
+        return accu;
+    }, {});
+    
+    let dice = [];
+    let count = [];
+    
+    for(let i in answer) {
+        dice.push(Number(i))
+        count.push(answer[i])
+    }
+    
+    let num = Object.keys(answer).length;
+    
+    if(num === 1) return 1111 * dice[0]
+    else if(num === 2 && count.indexOf(2) >= 0) {
+        return (dice[0] + dice[1]) * Math.abs(dice[0] - dice[1])
+    }
+    else if(num === 3) return dice[count.indexOf(1)] * dice[count.lastIndexOf(1)]
+    else if(num === 4) return Math.min(...dice)
+    
+    return Math.pow(10 * dice[count.indexOf(3)] + 
+                     dice[count.indexOf(1)], 2);
+}
+```
+
+---
+
+문제 :  
+#### 배열 조각하기
+
+설명 :  
+정수 배열 arr와 query가 주어집니다.  
+query를 순회하면서 다음 작업을 반복합니다.
+
+- 짝수 인덱스에서는 arr에서 query[i]번 인덱스를 제외하고 배열의 query[i]번 인덱스 뒷부분을 잘라서 버립니다.
+- 홀수 인덱스에서는 arr에서 query[i]번 인덱스는 제외하고 배열의 query[i]번 인덱스 앞부분을 잘라서 버립니다.
+
+위 작업을 마친 후 남은 arr의 부분 배열을 return 하는 solution 함수를 완성해 주세요.
+
+입출력 예  
+| arr | query | result |
+| :-: | :-: | :-: |
+| [0, 1, 2, 3, 4, 5] | [4, 1, 2] | [1, 2, 3] |
+
+solution.js:
+```javascript
+function solution(arr, query) {
+    var answer = [];
+    
+    for(let [i,q]  of query.entries()) {
+        if(i % 2 === 0) arr.splice(q+1);
+        else arr = arr.splice(q);
+    }
+    
+    return arr;
 }
 ```
 
