@@ -12,6 +12,9 @@
 10.	[전국 대회 선발 고사](#전국-대회-선발-고사)
 11.	[주사위 게임 3](#주사위-게임-3)
 12.	[배열 조각하기](#배열-조각하기)
+13. [OX퀴즈](#OX퀴즈)
+14. [분수의 덧셈](#분수의-덧셈)
+15. [다음에 올 숫자](#다음에-올-숫자)
 
 ---
 
@@ -435,6 +438,85 @@ function solution(arr, query) {
 ---
 
 문제 :  
+#### OX퀴즈
+
+설명 :  
+덧셈, 뺄셈 수식들이 'X [연산자] Y = Z' 형태로 들어있는 문자열 배열 quiz가 매개변수로 주어집니다. 수식이 옳다면 "O"를 틀리다면 "X"를 순서대로 담은 배열을 return하도록 solution 함수를 완성해주세요.
+
+입출력 예  
+| quiz | result |
+| :-: | :-: |
+| ["3 - 4 = -3", "5 + 6 = 11"] | ["X", "O"] |
+| ["19 - 6 = 13", "5 + 66 = 71", "5 - 15 = 63", "3 - 1 = 2"] | ["O", "O", "X", "O"] |
+
+solution.js:
+```javascript
+function solution(quiz) {
+    let answer = [];
+    let arr = quiz.map(a => a.split(" "));
+    for(let a of arr) {
+        if(a[1] === '+') {
+            Number(a[0]) + Number(a[2]) == Number(a[4]) ? answer.push("O") : answer.push("X")
+        } else {
+            Number(a[0]) - Number(a[2]) == Number(a[4]) ? answer.push("O") : answer.push("X")
+        }
+    }
+    return answer;
+}
+```
+
+---
+
+문제 :  
+#### 분수의 덧셈
+
+설명 :  
+첫 번째 분수의 분자와 분모를 뜻하는 numer1, denom1, 두 번째 분수의 분자와 분모를 뜻하는 numer2, denom2가 매개변수로 주어집니다. 두 분수를 더한 값을 기약 분수로 나타냈을 때 분자와 분모를 순서대로 담은 배열을 return 하도록 solution 함수를 완성해보세요.
+
+입출력 예  
+| numer1 | denom1 | numer2 | denom2 | result |
+| :-: | :-: | :-: | :-: | :-: |
+| 1 | 2 | 3 | 4 | [5, 4] |
+| 9 | 2 | 1 | 3 | [29, 6] |
+
+solution.js:
+```javascript
+function solution(numer1, denom1, numer2, denom2) {
+    let num = numer1 * denom2 + numer2 * denom1
+    let den = denom1 * denom2
+    let gcd = (num1, num2) => (num2 > 0 ? gcd(num2, num1 % num2) : num1);
+    
+    return [num / gcd(num, den), den / gcd(num, den)];
+}
+```
+
+---
+
+
+문제 :  
+#### 다음에 올 숫자
+
+설명 :  
+등차수열 혹은 등비수열 common이 매개변수로 주어질 때, 마지막 원소 다음으로 올 숫자를 return 하도록 solution 함수를 완성해보세요.
+
+입출력 예  
+| common | result |
+| :-: | :-: | 
+| [1, 2, 3, 4] | 5 |
+| [2, 4, 8] | 16 |
+
+solution.js:
+```javascript
+function solution(common) {
+    return common[1] - common[0] === common[2] - common[1] ? 
+        common.at(-1) + common[1] - common[0] : common.at(-1) * (common[1] / common[0]);
+}
+```
+
+---
+
+
+문제 :  
 #### 
 
 설명 :  
@@ -452,3 +534,4 @@ solution.js:
 ```
 
 ---
+
