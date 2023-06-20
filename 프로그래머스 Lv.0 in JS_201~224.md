@@ -15,6 +15,8 @@
 13. [OX퀴즈](#OX퀴즈)
 14. [분수의 덧셈](#분수의-덧셈)
 15. [다음에 올 숫자](#다음에-올-숫자)
+16. [캐릭터의 좌표](#캐릭터의-좌표)
+17. [다항식 더하기](#다항식-더하기)
 
 ---
 
@@ -515,6 +517,74 @@ function solution(common) {
 
 ---
 
+문제 :  
+#### 캐릭터의 좌표
+
+설명 :  
+머쓱이는 RPG게임을 하고 있습니다. 게임에는 up, down, left, right 방향키가 있으며 각 키를 누르면 위, 아래, 왼쪽, 오른쪽으로 한 칸씩 이동합니다. 예를 들어 [0,0]에서 up을 누른다면 캐릭터의 좌표는 [0, 1], down을 누른다면 [0, -1], left를 누른다면 [-1, 0], right를 누른다면 [1, 0]입니다. 머쓱이가 입력한 방향키의 배열 keyinput와 맵의 크기 board이 매개변수로 주어집니다. 캐릭터는 항상 [0,0]에서 시작할 때 키 입력이 모두 끝난 뒤에 캐릭터의 좌표 [x, y]를 return하도록 solution 함수를 완성해주세요.  
+
+- [0, 0]은 board의 정 중앙에 위치합니다. 예를 들어 board의 가로 크기가 9라면 캐릭터는 왼쪽으로 최대 [-4, 0]까지 오른쪽으로 최대 [4, 0]까지 이동할 수 있습니다.
+
+입출력 예  
+| keyinput | board | result |
+| :-: | :-: | :-: |
+| ["left", "right", "up", "right", "right"] | [11, 11] | [2, 1] |
+| ["down", "down", "down", "down", "down"] | [7, 9] | [0, -4] |
+
+solution.js:
+```javascript
+function solution(keyinput, board) {
+    var answer = [0,0];
+    let width = ((board[0] - 1) / 2);
+    let height = ((board[1] - 1) / 2);
+    
+    keyinput.map(a => {
+        if(a == "left" && answer[0] > width * -1) return answer[0]--;
+        else if(a == "right" && answer[0] < width) return answer[0]++;
+        else if(a == "up" && answer[1] < height) return answer[1]++;
+        else if(a == "down" && answer[1] > height * -1) return answer[1]--;
+    })
+    
+    return answer;
+}
+```
+
+---
+
+문제 :  
+#### 다항식 더하기
+
+설명 :  
+한 개 이상의 항의 합으로 이루어진 식을 다항식이라고 합니다. 다항식을 계산할 때는 동류항끼리 계산해 정리합니다. 덧셈으로 이루어진 다항식 polynomial이 매개변수로 주어질 때, 동류항끼리 더한 결괏값을 문자열로 return 하도록 solution 함수를 완성해보세요. 같은 식이라면 가장 짧은 수식을 return 합니다.
+
+입출력 예  
+| polynomial | result |
+| :-: | :-: |
+| "3x + 7 + x" | "4x + 7" |
+| "x + x + x" | "3x" |
+
+solution.js:
+```javascript
+function solution(polynomial) {
+    let num = 0;
+    let xNum = 0;
+    
+    polynomial = polynomial.split(" + ").map(a => a.split("x"))
+    
+    for(let p of polynomial) {
+        if(p.length > 1) {
+            if(p[0] == "") xNum++;
+            else xNum += Number(p[0]);
+        } else num += Number(p);
+    }
+    
+    if(xNum == 1) return num > 0 ? `x + ${num}` : 'x';
+    
+    return xNum > 0 && num > 0 ? `${xNum}x + ${num}` : xNum == 0 ? `${num}` : `${xNum}x`;
+}
+```
+
+---
 
 문제 :  
 #### 
@@ -534,4 +604,3 @@ solution.js:
 ```
 
 ---
-
